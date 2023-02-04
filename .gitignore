@@ -1,0 +1,11 @@
+*.bin
+*.o
+*.a
+*.temp
+*secret*
+.DS_Store
+build
+vendor
+./go-hk-systemd
+public
+db
