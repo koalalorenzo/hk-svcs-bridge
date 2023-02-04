@@ -19,6 +19,10 @@ type Config struct {
 var conf Config
 
 func init() {
+	if app_version == "" {
+		app_version = "local-dev"
+	}
+
 	path, a := os.LookupEnv("CONFIG")
 	if !a {
 		path = "config.yaml"

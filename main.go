@@ -11,6 +11,8 @@ import (
 	"syscall"
 )
 
+var app_version string
+
 func main() {
 	log.Print("Setting up the bridge")
 	bridge := SetupBridge()
