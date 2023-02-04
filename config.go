@@ -19,7 +19,7 @@ type Config struct {
 var conf Config
 
 func init() {
-	path, a := os.LookupEnv("HK_CONFIG")
+	path, a := os.LookupEnv("CONFIG")
 	if !a {
 		path = "config.yaml"
 	}
@@ -52,5 +52,9 @@ func init() {
 
 	if conf.UpdateDelay <= 3 {
 		conf.UpdateDelay = 3
+	}
+
+	if conf.DatabnasePath == "" {
+		conf.DatabnasePath = "db"
 	}
 }

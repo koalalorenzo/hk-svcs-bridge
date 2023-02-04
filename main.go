@@ -22,12 +22,10 @@ func main() {
 		svcsA = append(svcsA, svc.Accessory.A)
 	}
 
-	// Store the data in the "./db" directory.
-	fs := hap.NewFsStore("./db")
-
 	log.Print("Setting up the server")
 
 	// Create the hap server.
+	fs := hap.NewFsStore(conf.DatabnasePath)
 	server, err := hap.NewServer(fs, bridge.A, svcsA...)
 	if err != nil {
 		// stop if an error happens
