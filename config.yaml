@@ -1,7 +1,7 @@
 name: "RaspberryPi"
 pairing_code: "10042002"
 db_path: "db"
-update_delay_seconds: 60
+update_frequency: 5
 services: 
   - name: "jellyfin"
     oncmd: "wow"

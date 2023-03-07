@@ -9,11 +9,16 @@ import (
 )
 
 type Config struct {
-	Name          string           `yaml:"name"`
-	DatabnasePath string           `yaml:"db_path"`
-	PairingCode   string           `yaml:"pairing_code"`
-	UpdateDelay   int              `yaml:"update_delay_seconds"`
-	Services      []SystemDService `yaml:"services"`
+	// Name is the Name of the Bridge, visible in the HomeKit app
+	Name string `yaml:"name"`
+	// DatabasePath is the path where the files will be stored
+	DatabasePath string `yaml:"db_path"`
+	// PairingCode consist into a customizable pairing code for your accessory
+	PairingCode string `yaml:"pairing_code"`
+	// UpdateFrequency is the frequency in seconds to check for SystemD service
+	UpdateFrequency int `yaml:"update_frequency"`
+	// Services is the list of SystemD Services to add as accessories
+	Services []SystemDService `yaml:"services"`
 }
 
 var conf Config
