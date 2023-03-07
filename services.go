@@ -93,6 +93,10 @@ func (s *SystemDService) SetDefaults() {
 		s.PeriodicCheckCmd = fmt.Sprintf("systemctl is-active %s", s.ServiceName)
 	}
 
+	if defaults.CanUpdate(s.PeriodicCheck) {
+		s.PeriodicCheck = true
+	}
+
 }
 
 func (s *SystemDService) Init() {
