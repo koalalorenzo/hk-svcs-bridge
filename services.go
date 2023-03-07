@@ -37,15 +37,21 @@ func (s *SystemDService) runCmd(cmd string) {
 	s.IsUpdating = true
 	defer func() { s.IsUpdating = false }()
 
-	log.Printf("Running %s", s.OffCommand)
-	run := exec.Command(strings.Split(s.OffCommand, " ")...)
+	log.Printf("Running %s", cmd)
+
+	args := strings.Split(cmd, " ")
+	run := exec.Command(args[0], args[1:]...)
+
 	out, err := run.CombinedOutput()
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
 			exitCode := exitError.ExitCode()
-			log.Printf("Error encountered %v:\n %v", exitCode, out)
+			log.Printf("Cmd returned %v:\n %v", exitCode, out)
+		} else {
+			log.Printf("Error running command: %v", err)
 		}
 	}
+
 	s.Accessory.Switch.On.SetValue(false)
 
 	// Prevent Updating during the to avoid overlapping
@@ -63,9 +69,9 @@ func (s *SystemDService) Init() {
 	// Adds event for on-off switching
 	sw.Switch.On.OnValueRemoteUpdate(func(on bool) {
 		if on == true {
-			s.Off()
+			go s.runCmd(s.OffCommand)
 		} else {
-			s.On()
+			go s.runCmd(s.OnCommand)
 		}
 	})
 
