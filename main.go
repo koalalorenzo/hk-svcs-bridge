@@ -33,7 +33,7 @@ func main() {
 	log.Print("Setting up the server")
 
 	// Create the hap server.
-	fs := hap.NewFsStore(conf.DatabnasePath)
+	fs := hap.NewFsStore(conf.DatabasePath)
 	server, err := hap.NewServer(fs, bridge.A, svcsA...)
 	if err != nil {
 		// stop if an error happens

@@ -30,12 +30,6 @@ type SystemDService struct {
 	IsUpdating bool `yaml:"-"`
 }
 
-var systemctlBinaryPath string
-
-func init() {
-	systemctlBinaryPath, _ = exec.LookPath("systemctl")
-}
-
 func (s *SystemDService) runCmd(cmd string) {
 	if s.IsUpdating {
 		return
