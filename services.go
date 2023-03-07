@@ -23,14 +23,14 @@ type SystemDService struct {
 	OffCommand string `yaml:"offcmd"`
 	// PeriodicCheck if true will periodically check the status of the
 	// ServiceName.by running systemctl or the custom command
-	PeriodicCheck bool `yaml:"periodic_check"`
+	PeriodicCheck bool `yaml:"periodic_check" default:"true"`
 	// PeriodicCheckCmd is the command that if returns 0 will set to
 	PeriodicCheckCmd string `yaml:"periodic_check_cmd"`
 
 	// Accessory is t he HAP accessory
-	Accessory *accessory.Switch `yaml:"-"`
+	Accessory *accessory.Switch `yaml:"-" default:"-"`
 	// Updating is used to prevent the CheckStatus to interfere with the cmds
-	IsUpdating bool `yaml:"-"`
+	IsUpdating bool `yaml:"-" default:"-"`
 }
 
 func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
@@ -99,6 +99,8 @@ func (s *SystemDService) SetDefaults() {
 }
 
 func (s *SystemDService) Init() {
+	s.IsUpdating = false
+
 	sw := accessory.NewSwitch(accessory.Info{
 		Name: s.Name,
 	})

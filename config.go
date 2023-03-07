@@ -12,7 +12,7 @@ import (
 
 type Config struct {
 	// Name is the Name of the Bridge, visible in the HomeKit app
-	Name string `yaml:"name"`
+	Name string `yaml:"name" default:"-"`
 	// DatabasePath is the path where the files will be stored
 	DatabasePath string `yaml:"db_path" default:"./db"`
 	// PairingCode consist into a customizable pairing code for your accessory
@@ -39,6 +39,17 @@ func (c *Config) SetDefaults() {
 	}
 }
 
+func (s *Config) UnmarshalYAML(unmarshal func(interface{}) error) error {
+	defaults.Set(s)
+
+	type plain Config
+	if err := unmarshal((*plain)(s)); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 var conf Config
 
 func init() {
@@ -55,12 +66,9 @@ func init() {
 	if err != nil {
 		log.Printf("Error reading %s: #%v ", path, err)
 	}
+
 	err = yaml.Unmarshal(yamlFile, &conf)
 	if err != nil {
 		log.Fatalf("Unmarshal: %v", err)
-	}
-
-	if err := defaults.Set(conf); err != nil {
-		log.Fatal(err)
 	}
 }
