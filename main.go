@@ -58,6 +58,10 @@ func main() {
 		cancel()
 	}()
 
+	// Run the update Ticker
+	t := StartSystemDCheckTicker()
+	defer t.Stop()
+
 	// Run the server.
 	log.Print("READY")
 	server.ListenAndServe(ctx)
