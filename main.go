@@ -13,6 +13,12 @@ import (
 
 var app_version string
 
+func init() {
+	if len(app_version) == 0 {
+		app_version = "dev"
+	}
+}
+
 func main() {
 	log.Print("Setting up the bridge")
 	bridge := SetupBridge()
