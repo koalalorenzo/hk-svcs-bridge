@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/brutella/hap/accessory"
+	"github.com/creasty/defaults"
 )
 
 type SystemDService struct {
@@ -74,27 +75,30 @@ func (s *SystemDService) CheckStatus() {
 	s.runCmd(s.PeriodicCheckCmd, true, false)
 }
 
+func (s *SystemDService) SetDefaults() {
+	// Set Defaults
+	if defaults.CanUpdate(s.ServiceName) {
+		s.ServiceName = s.Name
+	}
+
+	if defaults.CanUpdate(s.OffCommand) {
+		s.OffCommand = fmt.Sprintf("systemctl stop %s", s.ServiceName)
+	}
+
+	if defaults.CanUpdate(s.OnCommand) {
+		s.OnCommand = fmt.Sprintf("systemctl start %s", s.ServiceName)
+	}
+
+	if defaults.CanUpdate(s.PeriodicCheckCmd) {
+		s.PeriodicCheckCmd = fmt.Sprintf("systemctl is-active %s", s.ServiceName)
+	}
+
+}
+
 func (s *SystemDService) Init() {
 	sw := accessory.NewSwitch(accessory.Info{
 		Name: s.Name,
 	})
-
-	// Set Defaults
-	if s.ServiceName == "" {
-		s.ServiceName = s.Name
-	}
-
-	if s.OffCommand == "" {
-		s.OffCommand = fmt.Sprintf("systemctl stop %s", s.ServiceName)
-	}
-
-	if s.OnCommand == "" {
-		s.OnCommand = fmt.Sprintf("systemctl start %s", s.ServiceName)
-	}
-
-	if s.PeriodicCheckCmd == "" {
-		s.PeriodicCheckCmd = fmt.Sprintf("systemctl is-active %s", s.ServiceName)
-	}
 
 	// We assume that the service is already running
 	sw.Switch.On.SetValue(true)
