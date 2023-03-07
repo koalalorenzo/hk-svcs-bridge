@@ -66,12 +66,6 @@ func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
 }
 
 func (s *SystemDService) CheckStatus() {
-	if s.IsUpdating {
-		return
-	}
-	s.IsUpdating = true
-	defer func() { s.IsUpdating = false }()
-
 	s.runCmd(s.PeriodicCheckCmd, true, false)
 }
 
@@ -99,6 +93,10 @@ func (s *SystemDService) SetDefaults() {
 }
 
 func (s *SystemDService) Init() {
+	if err := defaults.Set(s); err != nil {
+		log.Fatalf("Error seting Defaults: %v", err)
+	}
+
 	s.IsUpdating = false
 
 	sw := accessory.NewSwitch(accessory.Info{

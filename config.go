@@ -39,17 +39,6 @@ func (c *Config) SetDefaults() {
 	}
 }
 
-func (s *Config) UnmarshalYAML(unmarshal func(interface{}) error) error {
-	defaults.Set(s)
-
-	type plain Config
-	if err := unmarshal((*plain)(s)); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 var conf Config
 
 func init() {
@@ -70,5 +59,9 @@ func init() {
 	err = yaml.Unmarshal(yamlFile, &conf)
 	if err != nil {
 		log.Fatalf("Unmarshal: %v", err)
+	}
+
+	if err := defaults.Set(&conf); err != nil {
+		log.Fatalf("Error seting Defaults: %v", err)
 	}
 }
