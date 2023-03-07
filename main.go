@@ -9,7 +9,6 @@ import (
 
 	"github.com/brutella/hap"
 	"github.com/brutella/hap/accessory"
-	"github.com/creasty/defaults"
 )
 
 var app_version string
