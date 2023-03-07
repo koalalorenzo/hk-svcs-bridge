@@ -59,11 +59,11 @@ func init() {
 		}
 	}
 
-	if conf.UpdateDelay <= 3 {
-		conf.UpdateDelay = 3
+	if conf.UpdateFrequency <= 3 {
+		conf.UpdateFrequency = 3
 	}
 
-	if conf.DatabnasePath == "" {
-		conf.DatabnasePath = "db"
+	if conf.DatabasePath == "" {
+		conf.DatabasePath = "db"
 	}
 }
