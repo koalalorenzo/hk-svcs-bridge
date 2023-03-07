@@ -1,14 +1,15 @@
 package main
 
 import (
-	"github.com/brutella/hap"
-	"github.com/brutella/hap/accessory"
-
 	"context"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/brutella/hap"
+	"github.com/brutella/hap/accessory"
+	"github.com/creasty/defaults"
 )
 
 var app_version string

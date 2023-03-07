@@ -96,7 +96,6 @@ func (s *SystemDService) SetDefaults() {
 	if defaults.CanUpdate(s.PeriodicCheck) {
 		s.PeriodicCheck = true
 	}
-
 }
 
 func (s *SystemDService) Init() {
