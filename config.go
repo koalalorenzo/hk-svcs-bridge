@@ -32,7 +32,7 @@ func (c *Config) SetDefaults() {
 	if defaults.CanUpdate(c.Name) {
 		hn, err := os.Hostname()
 		if err != nil {
-			log.Warn("Unable to get hostname: #%v", err)
+			log.Warn("Unable to get hostname", "error", err)
 			conf.Name = "GoHomeKitBridge"
 		} else {
 			conf.Name = hn
@@ -51,19 +51,20 @@ func init() {
 	if !a {
 		path = "config.yaml"
 	}
+	log := log.With("configPath", path)
 
 	yamlFile, err := ioutil.ReadFile(path)
 	if err != nil {
-		log.Warn("Error reading %s: #%v ", path, err)
+		log.Warn("Error reading yaml", "err", err)
 	}
 
 	err = yaml.Unmarshal(yamlFile, &conf)
 	if err != nil {
-		log.Error("Unmarshal: %v", err)
+		log.Warn("Error Unmarshal config file", "err", err)
 	}
 
 	if err := defaults.Set(&conf); err != nil {
-		log.Error("Error seting Defaults: %v", err)
+		log.Warn("Error setting default values", "err", err)
 	}
 
 	log.Debug("Configuration loaded")

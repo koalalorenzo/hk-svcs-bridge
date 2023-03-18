@@ -39,21 +39,21 @@ func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
 	}
 	s.IsUpdating = true
 	defer func() { s.IsUpdating = false }()
+	log := log.With("cmd", cmd)
 
-	log.Info("Running %s", cmd)
-
+	log.Debug("Running...")
 	args := strings.Split(cmd, " ")
 	run := exec.Command(args[0], args[1:]...)
 
 	out, err := run.CombinedOutput()
+	log = log.With("output", out)
 	if err != nil {
 		s.Accessory.Switch.On.SetValue(failSetVal)
-
 		if exitError, ok := err.(*exec.ExitError); ok {
 			exitCode := exitError.ExitCode()
-			log.Warn("Cmd returned %v:\n %v", exitCode, out)
+			log.Warn("Error running output", "exitCode", exitCode)
 		} else {
-			log.Warn("Error running command: %v", err)
+			log.Warn("Error", "error", err)
 		}
 
 		return
@@ -93,9 +93,9 @@ func (s *SystemDService) SetDefaults() {
 	}
 }
 
-func (s *SystemDService) Init() {
+func (s *SystemDService) Init() SystemDService {
 	if err := defaults.Set(s); err != nil {
-		log.Error("Error seting Defaults: %v", err)
+		log.Error("Error seting Defaults", "error", err)
 	}
 
 	s.IsUpdating = false

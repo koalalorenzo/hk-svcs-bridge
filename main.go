@@ -25,22 +25,23 @@ func main() {
 
 	log.Info("Loading the accessories")
 	svcsA := []*accessory.A{}
+	services = []SystemDService{}
 	for _, svc := range conf.Services {
-		svc.Init()
+		services = append(services, svc.Init())
 		svcsA = append(svcsA, svc.Accessory.A)
 	}
 
-	log.Info("Setting up the server")
+	log.Debug("Setting up the server...")
 
 	// Create the hap server.
 	fs := hap.NewFsStore(conf.DatabasePath)
 	server, err := hap.NewServer(fs, bridge.A, svcsA...)
 	if err != nil {
 		// stop if an error happens
-		log.Error("Error setting HomeKit Server: %v", err)
+		log.Error("Error setting HomeKit Server", "error", err)
 	}
 
-	log.Info("Using HomeKit Pairing Pin Code: %s", conf.PairingCode)
+	log.Info("Using HomeKit Pairing Pin Code", "code", conf.PairingCode)
 	server.Pin = conf.PairingCode
 
 	// Setup a listener for interrupts and SIGTERM signals
@@ -63,6 +64,6 @@ func main() {
 	defer t.Stop()
 
 	// Run the server.
-	log.Info("READY")
+	log.Info("Ready")
 	server.ListenAndServe(ctx)
 }
