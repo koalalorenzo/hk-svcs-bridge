@@ -12,6 +12,7 @@ import (
 )
 
 var app_version string
+var services []SystemDService
 
 func init() {
 	if len(app_version) == 0 {

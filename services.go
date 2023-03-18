@@ -117,4 +117,5 @@ func (s *SystemDService) Init() SystemDService {
 	})
 
 	s.Accessory = sw
+	return *s
 }
