@@ -47,6 +47,21 @@ func init() {
 		app_version = "local-dev"
 	}
 
+	// Set Log Level
+	var logLevel = new(log.LevelVar)
+	ll, _ := os.LookupEnv("LOG_LEVEL")
+	switch ll {
+	case "debug":
+		logLevel.Set(log.LevelDebug)
+	case "warn":
+		logLevel.Set(log.LevelWarn)
+	case "error":
+		logLevel.Set(log.LevelError)
+	}
+
+	h := log.HandlerOptions{Level: logLevel}.NewTextHandler(os.Stderr)
+	log.SetDefault(log.New(h))
+
 	path, a := os.LookupEnv("CONFIG")
 	if !a {
 		path = "config.yaml"

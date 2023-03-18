@@ -1,9 +1,9 @@
 name: "RaspberryPi"
-pairing_code: "10042002"
 db_path: "db"
-update_frequency: 5
+update_frequency: 3
 services: 
   - name: "jellyfin"
-    oncmd: "wow"
-    offcmd: "wow-off"
+    oncmd: "return.sh 0"
+    offcmd: "returh.sh 0"
+    periodic_check_cmd: "return.sh 1"
     service_name: "pod-jellyfin"
