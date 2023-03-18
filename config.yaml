@@ -1,0 +1,18 @@
+# Name of the service, Visiblein Homekit
+name: "RaspberryPy"
+
+# Pairing code used by HomeKit to pair
+pairing_code: "10042002"
+
+# Path of the Database to store files
+db_path: "db"
+
+# How often should we check SystemD / cmds for status updates?
+update_frequency: 5
+
+# List of services to add to HomeKit switches
+services: 
+  - name: "jellyfin"
+    oncmd: "wow"
+    offcmd: "wow-off"
+    service_name: "pod-jellyfin"
