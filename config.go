@@ -2,8 +2,9 @@ package main
 
 import (
 	"io/ioutil"
-	"log"
 	"os"
+
+	log "golang.org/x/exp/slog"
 
 	yaml "gopkg.in/yaml.v3"
 
@@ -31,7 +32,7 @@ func (c *Config) SetDefaults() {
 	if defaults.CanUpdate(c.Name) {
 		hn, err := os.Hostname()
 		if err != nil {
-			log.Printf("Unable to get hostname: #%v", err)
+			log.Warn("Unable to get hostname: #%v", err)
 			conf.Name = "GoHomeKitBridge"
 		} else {
 			conf.Name = hn
@@ -53,15 +54,17 @@ func init() {
 
 	yamlFile, err := ioutil.ReadFile(path)
 	if err != nil {
-		log.Printf("Error reading %s: #%v ", path, err)
+		log.Warn("Error reading %s: #%v ", path, err)
 	}
 
 	err = yaml.Unmarshal(yamlFile, &conf)
 	if err != nil {
-		log.Fatalf("Unmarshal: %v", err)
+		log.Error("Unmarshal: %v", err)
 	}
 
 	if err := defaults.Set(&conf); err != nil {
-		log.Fatalf("Error seting Defaults: %v", err)
+		log.Error("Error seting Defaults: %v", err)
 	}
+
+	log.Debug("Configuration loaded")
 }

@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"log"
+	log "golang.org/x/exp/slog"
 	"os/exec"
 	"strings"
 	"time"
@@ -40,7 +40,7 @@ func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
 	s.IsUpdating = true
 	defer func() { s.IsUpdating = false }()
 
-	log.Printf("Running %s", cmd)
+	log.Info("Running %s", cmd)
 
 	args := strings.Split(cmd, " ")
 	run := exec.Command(args[0], args[1:]...)
@@ -51,9 +51,9 @@ func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
 
 		if exitError, ok := err.(*exec.ExitError); ok {
 			exitCode := exitError.ExitCode()
-			log.Printf("Cmd returned %v:\n %v", exitCode, out)
+			log.Warn("Cmd returned %v:\n %v", exitCode, out)
 		} else {
-			log.Printf("Error running command: %v", err)
+			log.Warn("Error running command: %v", err)
 		}
 
 		return
@@ -66,6 +66,7 @@ func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
 }
 
 func (s *SystemDService) CheckStatus() {
+	log.Debug("Checking Status for service: %s", s.Accessory.Name())
 	s.runCmd(s.PeriodicCheckCmd, true, false)
 }
 
@@ -94,7 +95,7 @@ func (s *SystemDService) SetDefaults() {
 
 func (s *SystemDService) Init() {
 	if err := defaults.Set(s); err != nil {
-		log.Fatalf("Error seting Defaults: %v", err)
+		log.Error("Error seting Defaults: %v", err)
 	}
 
 	s.IsUpdating = false

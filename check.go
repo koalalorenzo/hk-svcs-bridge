@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	log "golang.org/x/exp/slog"
 	"time"
 )
 
@@ -12,14 +11,14 @@ func StartSystemDCheckTicker() (ticker *time.Ticker) {
 
 	go func() {
 		for range ticker.C {
-			log.Print("Checking")
+			log.Debug("Checking")
 			for _, s := range conf.Services {
 				if s.PeriodicCheck {
 					go s.CheckStatus()
 				}
 			}
 		}
-		fmt.Printf("Ticker Stopped")
+		log.Warn("Ticker Stopped")
 	}()
 	return
 }

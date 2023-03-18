@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"log"
+	log "golang.org/x/exp/slog"
 	"os"
 	"os/signal"
 	"syscall"
@@ -20,27 +20,27 @@ func init() {
 }
 
 func main() {
-	log.Print("Setting up the bridge")
+	log.Info("Setting up the bridge")
 	bridge := SetupBridge()
 
-	log.Print("Loading the accessories")
+	log.Info("Loading the accessories")
 	svcsA := []*accessory.A{}
 	for _, svc := range conf.Services {
 		svc.Init()
 		svcsA = append(svcsA, svc.Accessory.A)
 	}
 
-	log.Print("Setting up the server")
+	log.Info("Setting up the server")
 
 	// Create the hap server.
 	fs := hap.NewFsStore(conf.DatabasePath)
 	server, err := hap.NewServer(fs, bridge.A, svcsA...)
 	if err != nil {
 		// stop if an error happens
-		log.Panic(err)
+		log.Error("Error setting HomeKit Server: %v", err)
 	}
 
-	log.Printf("Using HomeKit Pairing Pin Code: %s", conf.PairingCode)
+	log.Info("Using HomeKit Pairing Pin Code: %s", conf.PairingCode)
 	server.Pin = conf.PairingCode
 
 	// Setup a listener for interrupts and SIGTERM signals
@@ -63,6 +63,6 @@ func main() {
 	defer t.Stop()
 
 	// Run the server.
-	log.Print("READY")
+	log.Info("READY")
 	server.ListenAndServe(ctx)
 }
