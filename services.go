@@ -77,7 +77,8 @@ func (s *SystemDService) CheckStatus() {
 }
 
 func (s *SystemDService) SetDefaults() {
-	// Set Defaults
+	log.Debug("Loading default config for svc", "svc", s)
+
 	if defaults.CanUpdate(s.ServiceName) {
 		s.ServiceName = s.Name
 	}
@@ -94,16 +95,10 @@ func (s *SystemDService) SetDefaults() {
 		s.PeriodicCheckCmd = fmt.Sprintf("systemctl is-active %s", s.ServiceName)
 	}
 
-	if defaults.CanUpdate(s.PeriodicCheck) {
-		s.PeriodicCheck = true
-	}
+	log.Debug("Done loading default config for svc", "svc", s)
 }
 
 func (s *SystemDService) Init() SystemDService {
-	if err := defaults.Set(s); err != nil {
-		log.Error("Error seting Defaults", "error", err)
-	}
-
 	s.IsUpdating = false
 
 	sw := accessory.NewSwitch(accessory.Info{
