@@ -66,7 +66,7 @@ func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
 }
 
 func (s *SystemDService) CheckStatus() {
-	log.Debug("Checking Status for service: %s", s.Accessory.Name())
+	log.Debug("Checking Status for service", "accessory_name", s.Accessory.Name())
 	s.runCmd(s.PeriodicCheckCmd, true, false)
 }
 

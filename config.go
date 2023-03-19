@@ -43,10 +43,6 @@ func (c *Config) SetDefaults() {
 var conf Config
 
 func init() {
-	if app_version == "" {
-		app_version = "local-dev"
-	}
-
 	// Set Log Level
 	var logLevel = new(log.LevelVar)
 	ll, _ := os.LookupEnv("LOG_LEVEL")
@@ -62,11 +58,17 @@ func init() {
 	h := log.HandlerOptions{Level: logLevel}.NewTextHandler(os.Stderr)
 	log.SetDefault(log.New(h))
 
+	if app_version == "" {
+		app_version = "local-dev"
+	}
+	log := log.With("app_version", app_version, "app_build", app_build)
+
+	// Loads config
 	path, a := os.LookupEnv("CONFIG")
 	if !a {
 		path = "config.yaml"
 	}
-	log := log.With("configPath", path)
+	log = log.With("configPath", path)
 
 	yamlFile, err := ioutil.ReadFile(path)
 	if err != nil {
