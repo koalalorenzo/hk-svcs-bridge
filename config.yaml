@@ -14,20 +14,29 @@ log_level: debug
 pairing_code: "10042002"
 
 # Path of the Database to store files
-db_path: "/usr/var/db"
+db_path: "/usr/var/go-hk-systemd-bridge/db"
 
 # How often should we check SystemD / cmds for status updates?
-update_frequency: 5
+update_frequency: 30
 
 # List of services to add to HomeKit as on/off switches
 services: 
-  - name: "nginx" # use SystemD
+  - name: "nginx" # Use SystemD and default values
+
   - name: "HTTP Proxy" # Customize the HomeKit Switch name
-    service_name: "nginx" # use systemd with this service name
+    service_name: "nginx" # specify what is the systemd service name to check
   
   - name: "Media Server" # The name visible in HomeKit
     # You can customize on, off and periodic check commands. If these commands
     # return 0 then it means that the action is successfull.
     on_cmd: "docker start jellyfin" 
     off_cmd: "docker stop jellyfin"
+    # If the period check command returns 0, the switch will be set to ON 
     periodic_check_cmd: "docker inspect --format='{{.State.Running}}' jellyfin"
+
+  - name: "PiHole"
+    # Or for example look into custom setup that will not be periodically
+    # checked. Note that by default switches/services are "ON"
+    on_cmd: "pihole enable"
+    off_cmd: "pihole disable"
+    periodic_check: false
