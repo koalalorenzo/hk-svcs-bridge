@@ -23,6 +23,7 @@ ifeq ($(UNAME_S),Linux)
 	$(MAKE) build -e BUILD_BINARY=/usr/bin/go-hk-systemd-bridge
 	cp systemd.service /etc/systemd/system/go-homekit-systemd-bridge.service
 	cp config.yaml /etc/go-hk-systemd-bridge.yaml
+	mkdir -p /usr/var/go-hk-systemd-bridge/
 	systemctl daemon-reload
 	systemctl enable go-hk-systemd-bridge
 else

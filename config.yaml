@@ -14,7 +14,7 @@ log_level: debug
 pairing_code: "10042002"
 
 # Path of the Database to store files
-db_path: "/usr/var/go-hk-systemd-bridge/db"
+db_path: "/usr/var/go-hk-systemd-bridge"
 
 # How often should we check SystemD / cmds for status updates?
 update_frequency: 30
