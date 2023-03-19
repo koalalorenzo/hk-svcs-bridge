@@ -23,9 +23,9 @@ type SystemDService struct {
 	OffCommand string `yaml:"off_cmd"`
 	// PeriodicCheck if true will periodically check the status of the
 	// ServiceName.by running systemctl or the custom command
-	PeriodicCheck bool `yaml:"periodic_check" default:"true"`
+	PeriodicCheck bool `yaml:"-" default:"-"`
 	// PeriodicCheckCmd is the command that if returns 0 will set to
-	PeriodicCheckCmd string `yaml:"periodic_check_cmd"`
+	PeriodicCheckCmd string `yaml:"check_cmd"`
 
 	// Accessory is t he HAP accessory
 	Accessory *accessory.Switch `yaml:"-" default:"-"`
@@ -95,7 +95,10 @@ func (s *SystemDService) SetDefaults() {
 		s.PeriodicCheckCmd = fmt.Sprintf("systemctl is-active %s", s.ServiceName)
 	}
 
-	log.Debug("Done loading default config for svc", "svc", s)
+	// Disable the periodic check if the cmd is "Disabled"
+	// this is a workaround due to setting default with falsy values
+	// TODO: Set the boolean from the YAML instead of force custom cmd
+	s.PeriodicCheck = s.PeriodicCheckCmd != "disabled"
 }
 
 func (s *SystemDService) Init() SystemDService {
