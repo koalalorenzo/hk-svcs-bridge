@@ -11,10 +11,13 @@ stages:
     - test
   script:
     - make clean
-    - make build -e GOOS=linux -e GOARCH=amd64
-    - make build -e GOOS=linux -e GOARCH=arm
-    - make build -e GOOS=darwin -e GOARCH=amd64
-    - make build -e GOOS=windows -e GOARCH=amd64
+    - make build -e GOOS=linux -e GOARCH=amd64 -e BUILD_TARGET=linux-amd64
+    - make build -e GOOS=linux -e GOARCH=arm -e BUILD_TARGET=linux-arm
+    - make build -e GOOS=linux -e GOARCH=arm64 -e BUILD_TARGET=linux-arm64
+    - make buold -e BUILD_TARGET=rpi
+    - make build -e GOOS=darwin -e GOARCH=amd64 -e BUILD_TARGET=macOS-amd64
+    - make build -e GOOS=darwin -e GOARCH=arm64 -e BUILD_TARGET=macOS-applesilicon
+    - make build -e GOOS=windows -e GOARCH=amd64 -e BUILD_TARGET=win-amd64
 
 test:
   stage: test
