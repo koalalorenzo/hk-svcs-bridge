@@ -66,7 +66,13 @@ func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
 }
 
 func (s *SystemDService) CheckStatus() {
-	log.Debug("Checking Status for service", "accessory_name", s.Accessory.Name())
+	log := log.With("svc_name", s.Name)
+	if !s.PeriodicCheck {
+		log.Debug("Skipping periodic check")
+		return
+	}
+
+	log.Debug("Checking status for service")
 	s.runCmd(s.PeriodicCheckCmd, true, false)
 }
 
