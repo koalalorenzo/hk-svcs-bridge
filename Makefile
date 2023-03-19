@@ -14,7 +14,7 @@ clean:
 test: clean
 	go fmt $(go list ./... | grep -v /vendor/)
 	go vet $(go list ./... | grep -v /vendor/)
-	go test -race $(go list ./... | grep -v /vendor/)	
+	CGO_ENABLED=1 go test -race $(go list ./... | grep -v /vendor/)	
 .PHONY: test
 
 build:
