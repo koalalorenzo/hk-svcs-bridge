@@ -3,12 +3,6 @@ APP_VERSION ?= local-dev
 GIT_TAG ?= $(shell git log -1 --pretty=format:"%h")
 APP_BUILD ?= $(shell date -u "+%Y%m%d-%H%M")-${GIT_TAG}
 
-ifeq (${BUILD_TARGET},rpi)
-GOARCH := arm
-GOOS := linux
-GOARM=7
-endif
-
 CGO_ENABLED=0
 
 .EXPORT_ALL_VARIABLES:
