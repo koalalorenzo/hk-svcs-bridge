@@ -32,11 +32,11 @@ services:
     on_cmd: "docker start jellyfin" 
     off_cmd: "docker stop jellyfin"
     # If the period check command returns 0, the switch will be set to ON 
-    periodic_check_cmd: "docker inspect --format='{{.State.Running}}' jellyfin"
+    check_cmd: "docker inspect --format='{{.State.Running}}' jellyfin"
 
   - name: "PiHole"
     # Or for example look into custom setup that will not be periodically
     # checked. Note that by default switches/services are "ON"
     on_cmd: "pihole enable"
     off_cmd: "pihole disable"
-    periodic_check: false
+    check_cmd: "disabled"
