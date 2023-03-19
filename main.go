@@ -25,7 +25,7 @@ func main() {
 	log.Info("Starting Go HomeKit Services Bridge", "version", app_version, "build", app_build)
 	bridge := SetupBridge()
 
-	log.Info("Loading the accessories")
+	log.Debug("Loading the accessories...")
 	svcsA := []*accessory.A{}
 	services = []SystemDService{}
 	for _, svc := range conf.Services {
@@ -43,7 +43,7 @@ func main() {
 		log.Error("Error setting HomeKit Server", "error", err)
 	}
 
-	log.Info("Using HomeKit Pairing Pin Code", "code", conf.PairingCode)
+	log.Info("Updating HomeKit Pairing PIN", "code", conf.PairingCode)
 	server.Pin = conf.PairingCode
 
 	// Setup a listener for interrupts and SIGTERM signals
