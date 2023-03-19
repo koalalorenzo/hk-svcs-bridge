@@ -12,6 +12,7 @@ import (
 )
 
 var app_version string
+var app_build string
 var services []SystemDService
 
 func init() {
@@ -21,7 +22,7 @@ func init() {
 }
 
 func main() {
-	log.Info("Setting up the bridge")
+	log.Info("Starting Go HomeKit Services Bridge", "version", app_version, "build", app_build)
 	bridge := SetupBridge()
 
 	log.Info("Loading the accessories")
