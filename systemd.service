@@ -1,0 +1,12 @@
+[Unit]
+Description=Go HomeKit SystemD Bridge
+After=network-online.target
+
+[Service]
+Restart=on-failure
+Environment="CONFIG=/etc/go-homekit-systed-bridge.yaml"
+ExecStart=/usr/bin/go-hk-systemd-bridge
+WorkingDirectory=/usr/var/go-hk-systemd-bridge/
+
+[Install]
+WantedBy=multi-user.target

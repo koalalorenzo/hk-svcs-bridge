@@ -18,9 +18,9 @@ type SystemDService struct {
 	ServiceName string `yaml:"service_name"`
 	// OnCommand is useful if we want to customize what command to run when
 	// the trigger is ON
-	OnCommand string `yaml:"oncmd"`
+	OnCommand string `yaml:"on_cmd"`
 	// OffCommand is like OnCommand but runs when the trigger is set to Off
-	OffCommand string `yaml:"offcmd"`
+	OffCommand string `yaml:"off_cmd"`
 	// PeriodicCheck if true will periodically check the status of the
 	// ServiceName.by running systemctl or the custom command
 	PeriodicCheck bool `yaml:"periodic_check" default:"true"`
@@ -66,7 +66,13 @@ func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
 }
 
 func (s *SystemDService) CheckStatus() {
-	log.Debug("Checking Status for service", "accessory_name", s.Accessory.Name())
+	log := log.With("svc_name", s.Name)
+	if !s.PeriodicCheck {
+		log.Debug("Skipping periodic check")
+		return
+	}
+
+	log.Debug("Checking status for service")
 	s.runCmd(s.PeriodicCheckCmd, true, false)
 }
 
@@ -109,10 +115,12 @@ func (s *SystemDService) Init() SystemDService {
 
 	// Adds event for on-off switching
 	sw.Switch.On.OnValueRemoteUpdate(func(on bool) {
+		// If it fails running any cmd, don't change the value of the switch
+		oldValue := s.Accessory.Switch.On.Value()
 		if on == true {
-			s.runCmd(s.OffCommand, false, false)
+			s.runCmd(s.OffCommand, false, oldValue)
 		} else {
-			s.runCmd(s.OnCommand, true, false)
+			s.runCmd(s.OnCommand, true, oldValue)
 		}
 	})
 
