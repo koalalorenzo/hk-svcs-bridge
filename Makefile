@@ -19,11 +19,15 @@ test: clean
 .PHONY: test
 
 install: clean
+ifeq ($(UNAME_S),Linux)
 	$(MAKE) build -e BUILD_BINARY=/usr/bin/go-hk-systemd-bridge
 	cp systemd.service /etc/systemd/system/go-homekit-systemd-bridge.service
 	cp config.yaml /etc/go-hk-systemd-bridge.yaml
 	systemctl daemon-reload
 	systemctl enable go-hk-systemd-bridge
+else
+	@echo "Error: make install cmd supports only GNU/Linux"
+endif
 .PHONY: install
 
 build:
