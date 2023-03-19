@@ -1,18 +1,33 @@
-# Name of the service, Visiblein Homekit
-name: "RaspberryPy"
+################################################################################
+# Go-HomeKit-SystemD-Bridge config example
+################################################################################
+# This file is a configuration example 
+# For more information, see: 
+
+# Name of the service, Visible in Homekit
+name: RaspberryPy
+
+# Set the log level. If specified, the env variable LOG_LEVEL will be ingored
+log_level: debug
 
 # Pairing code used by HomeKit to pair
 pairing_code: "10042002"
 
 # Path of the Database to store files
-db_path: "db"
+db_path: "/usr/var/db"
 
 # How often should we check SystemD / cmds for status updates?
 update_frequency: 5
 
-# List of services to add to HomeKit switches
+# List of services to add to HomeKit as on/off switches
 services: 
-  - name: "jellyfin"
-    oncmd: "wow"
-    offcmd: "wow-off"
-    service_name: "pod-jellyfin"
+  - name: "nginx" # use SystemD
+  - name: "HTTP Proxy" # Customize the HomeKit Switch name
+    service_name: "nginx" # use systemd with this service name
+  
+  - name: "Media Server" # The name visible in HomeKit
+    # You can customize on, off and periodic check commands. If these commands
+    # return 0 then it means that the action is successfull.
+    on_cmd: "docker start jellyfin" 
+    off_cmd: "docker stop jellyfin"
+    periodic_check_cmd: "docker inspect --format='{{.State.Running}}' jellyfin"
