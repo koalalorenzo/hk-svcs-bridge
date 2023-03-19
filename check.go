@@ -13,9 +13,7 @@ func StartSystemDCheckTicker() (ticker *time.Ticker) {
 		for range ticker.C {
 			log.Debug("Checking services status")
 			for _, s := range services {
-				if s.PeriodicCheck {
-					go s.CheckStatus()
-				}
+				s.CheckStatus()
 			}
 		}
 		log.Warn("Ticker Stopped")

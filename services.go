@@ -18,9 +18,9 @@ type SystemDService struct {
 	ServiceName string `yaml:"service_name"`
 	// OnCommand is useful if we want to customize what command to run when
 	// the trigger is ON
-	OnCommand string `yaml:"oncmd"`
+	OnCommand string `yaml:"on_cmd"`
 	// OffCommand is like OnCommand but runs when the trigger is set to Off
-	OffCommand string `yaml:"offcmd"`
+	OffCommand string `yaml:"off_cmd"`
 	// PeriodicCheck if true will periodically check the status of the
 	// ServiceName.by running systemctl or the custom command
 	PeriodicCheck bool `yaml:"periodic_check" default:"true"`
