@@ -2,7 +2,7 @@
 # Go-HomeKit-SystemD-Bridge config example
 ################################################################################
 # This file is a configuration example 
-# For more information, see: 
+# For more information, see: https://gitlab.com/koalalorenzo/go-hk-systemd-bridge
 
 # Name of the service, Visible in Homekit
 name: RaspberryPy
