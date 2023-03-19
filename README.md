@@ -3,5 +3,15 @@
 fake switches in your home configuration. This helps you to visualise and
 turn "off" or "on" services on the host SystemD.
 
-This is a WIP and side project, just for fun! HomeKit is not designed for 
-system administrators and this project is just for fun
+**Important**: This is a WIP and side project. It is not designed for system 
+production usage and this project is just for fun!
+
+## How to install
+TODO
+
+## How to run
+TODO
+
+## Configuration
+TODO
+
