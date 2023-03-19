@@ -109,10 +109,12 @@ func (s *SystemDService) Init() SystemDService {
 
 	// Adds event for on-off switching
 	sw.Switch.On.OnValueRemoteUpdate(func(on bool) {
+		// If it fails running any cmd, don't change the value of the switch
+		oldValue := s.Accessory.Switch.On.Value()
 		if on == true {
-			s.runCmd(s.OffCommand, false, false)
+			s.runCmd(s.OffCommand, false, oldValue)
 		} else {
-			s.runCmd(s.OnCommand, true, false)
+			s.runCmd(s.OnCommand, true, oldValue)
 		}
 	})
 
