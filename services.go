@@ -77,8 +77,6 @@ func (s *SystemDService) CheckStatus() {
 }
 
 func (s *SystemDService) SetDefaults() {
-	log.Debug("Loading default config for svc", "svc", s)
-
 	if defaults.CanUpdate(s.ServiceName) {
 		s.ServiceName = s.Name
 	}
