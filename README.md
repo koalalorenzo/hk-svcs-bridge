@@ -17,24 +17,40 @@ production usage and this project is just for fun!
 If you are using GNU/Linux with SystemD you can automatically install the binary 
 from the source code. Make sure to have installed:
 
-* SystemD (Default available on many Distro like Ubuntu, Debian and Arch)
+* SystemD (available by default on many distro like Ubuntu, Debian and Arch)
 * GNU Make
 * Go
 * Git
 
+You can then run these commands to install the binary and the service:
+
 ```bash
-git clone https://gitlab.com/koalalorenzo/go-hk-systemd.git go-hk-systemd-bridge
+git clone https://gitlab.com/koalalorenzo/go-hk-systemd-bridge.git
 cd go-hk-systemd-bridge
 sudo make install
 ```
 
-After that you should be able to configure the configuration in 
-`/etc/go-hk-systemd-bridge.yaml` and then run:
+After that, you **must change the configuration** in 
+`/etc/go-hk-systemd-bridge.yaml`. Then you can run/restart the bridge by 
+running:
 
 ```bash
 sudo systemd restart go-hk-systemd-bridge
 ```
 
 ## Configuration
-TODO
+You can customize many things, from the name of the bridge in Home Kit to 
+the services and commands that will be executed. You can read more
+in the example configuration file [here](config.yaml).
+
+Please note that many of the options can be omitted, the default values are 
+specified in the [code for the configuration](config.go).
+
+By default the binary will look for `config.yaml` path, but you can customize
+the path by using the environment variable `CONFIG`:
+
+```bash
+export CONFIG=/etc/go-hk-systemd-bridge.yaml
+/usr/bin/go-hk-systemd-bridge
+```
 
