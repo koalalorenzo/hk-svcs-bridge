@@ -3,6 +3,7 @@ APP_VERSION ?= local-dev
 GIT_TAG ?= $(shell git log -1 --pretty=format:"%h")
 APP_BUILD ?= $(shell date -u "+%Y%m%d-%H%M")-${GIT_TAG}
 BUILD_BINARY ?= build/go-hk-systemd-bridge-${APP_VERSION}-${BUILD_TARGET}
+UNAME_S ?= $(shell uname -s)
 
 CGO_ENABLED=0
 
@@ -22,10 +23,10 @@ install: clean
 ifeq ($(UNAME_S),Linux)
 	$(MAKE) build -e BUILD_BINARY=/usr/bin/go-hk-systemd-bridge
 	cp systemd.service /etc/systemd/system/go-homekit-systemd-bridge.service
-	cp config.yaml /etc/go-hk-systemd-bridge.yaml
+	cp config.yaml /etc/go-homekit-systed-bridge.yaml
 	mkdir -p /usr/var/go-hk-systemd-bridge/
 	systemctl daemon-reload
-	systemctl enable go-hk-systemd-bridge
+	systemctl enable /etc/systemd/system/go-homekit-systemd-bridge.service
 else
 	@echo "Error: make install cmd supports only GNU/Linux"
 endif
