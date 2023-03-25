@@ -1,7 +1,7 @@
 # Go HomeKit Services Bridge
-o-hk-systemd is a system service written in Go that acts as a HomeKit bridge to
-connect SystemD services and HomeKit automation. This project is available for
-macOS and Linux, and it allows users to add new fake switches to their Apple
+hk-svcs-bridge is a system service written in Go that acts as a HomeKit bridge
+to connect SystemD services and HomeKit automation. This project is available
+for macOS and Linux, and it allows users to add new fake switches to their Apple
 HomeKit home setup. When these switches are turned on, they will start some
 SystemD services, and when turned off, they will stop them.
 
@@ -25,17 +25,17 @@ from the source code. Make sure to have installed:
 You can then run these commands to install the binary and the service:
 
 ```bash
-git clone https://gitlab.com/koalalorenzo/go-hk-systemd-bridge.git
-cd go-hk-systemd-bridge
+git clone https://gitlab.com/koalalorenzo/hk-svcs-bridge.git
+cd hk-svcs-bridge
 sudo make install
 ```
 
 After that, you **must change the configuration** in 
-`/etc/go-hk-systemd-bridge.yaml`. Then you can run/restart the bridge by 
+`/etc/hk-svcs-bridge.yaml`. Then you can run/restart the bridge by 
 running:
 
 ```bash
-sudo systemd restart go-hk-systemd-bridge
+sudo systemd restart hk-svcs-bridge
 ```
 
 ## Configuration
@@ -50,7 +50,7 @@ By default the binary will look for `config.yaml` path, but you can customize
 the path by using the environment variable `CONFIG`:
 
 ```bash
-export CONFIG=/etc/go-hk-systemd-bridge.yaml
-/usr/bin/go-hk-systemd-bridge
+export CONFIG=/etc/hk-svcs-bridge.yaml
+/usr/bin/hk-svcs-bridge
 ```
 

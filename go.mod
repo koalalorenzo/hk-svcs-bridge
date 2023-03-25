@@ -1,4 +1,4 @@
-module gitlab.com/koalalorenzo/go-hk-systemd
+module gitlab.com/koalalorenzo/hk-svcs-bridge
 
 go 1.20
 
