@@ -1,11 +1,16 @@
 BUILD_TARGET ?=
 APP_VERSION ?= local-dev
-GIT_TAG ?= $(shell git log -1 --pretty=format:"%h")
-APP_BUILD ?= $(shell date -u "+%Y%m%d-%H%M")-${GIT_TAG}
-BUILD_BINARY ?= build/go-hk-systemd-bridge-${APP_VERSION}-${BUILD_TARGET}
+GIT_SHA ?= $(shell git log -1 --pretty=format:"%h")
+APP_BUILD ?= $(shell date -u "+%Y%m%d-%H%M")-${GIT_SHA}
+BUILD_BINARY ?= build/hk-systemd-bridge-${APP_VERSION}-${BUILD_TARGET}
 UNAME_S ?= $(shell uname -s)
 
 CGO_ENABLED=0
+
+ifeq ($(GOARCH),arm)
+	DEB_ARCH := armhf
+endif
+DEB_ARCH ?= $(GOARCH)
 
 .EXPORT_ALL_VARIABLES:
 
