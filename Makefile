@@ -7,12 +7,15 @@ UNAME_S ?= $(shell uname -s)
 
 CGO_ENABLED=0
 
+
+.EXPORT_ALL_VARIABLES:
+
 ifeq ($(GOARCH),arm)
 	DEB_ARCH := armhf
 endif
 DEB_ARCH ?= $(GOARCH)
-
-.EXPORT_ALL_VARIABLES:
+_DEB_BUILD_PATH := $(shell mktemp -d)/build/deb/${DEB_ARCH}/hk-svcs-bridge-${APP_VERSION}
+DATE ?= $(shell date -R)
 
 clean:
 	rm -rf build
@@ -42,6 +45,22 @@ build:
 	go build \
 		-ldflags "-X main.app_version=${APP_VERSION} -X main.app_build=${APP_BUILD}" \
 		-o ${BUILD_BINARY}
+	cp LICENSE build/
+	cp config.yaml build/example-config.yaml
+.PHONY: build
+
+dpkg:
+	mkdir -p ${_DEB_BUILD_PATH}/build
+	cp -aR debian services ${_DEB_BUILD_PATH}/
+	cp LICENSE config.yaml ${_DEB_BUILD_PATH}/build
+	cp ${BUILD_BINARY} ${_DEB_BUILD_PATH}/build/hk-svcs-bridge
+	chmod +x ${_DEB_BUILD_PATH}/debian/rules
+	envsubst < debian/control > ${_DEB_BUILD_PATH}/debian/control
+	envsubst < debian/changelog > ${_DEB_BUILD_PATH}/debian/changelog
+	cd ${_DEB_BUILD_PATH};\
+	dpkg-buildpackage -us -uc -d --host-arch ${DEB_ARCH}
+	cp ${_DEB_BUILD_PATH}/../*.deb ${_DEB_BUILD_PATH}/../*.dsc build/
+.PHONY:
 
 run: clean
 	LOG_LEVEL=debug go run ./*.go
