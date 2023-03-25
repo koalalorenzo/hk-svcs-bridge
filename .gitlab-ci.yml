@@ -19,6 +19,16 @@ stages:
     - make build -e GOOS=darwin -e GOARCH=arm64 -e BUILD_TARGET=macOS-applesilicon
     - make build -e GOOS=windows -e GOARCH=amd64 -e BUILD_TARGET=win-amd64
 
+.builddpkgs:
+  image: ubuntu:latest
+  stage: build
+  script:
+    - apt update
+    - apt-get install --yes make dh-make apt-utils dpkg-dev dpkg-sig ubuntu-dev-tools binutils-arm-linux-gnueabihf build-essential
+    - make dpgk -e GOOS=linux -e GOARCH=amd64 -e BUILD_TARGET=linux-amd64
+    - make dpgk -e GOOS=linux -e GOARCH=arm -e BUILD_TARGET=linux-arm
+    - make dpgk -e GOOS=linux -e GOARCH=arm -e GOARM=7 -e BUILD_TARGET=rpi3
+
 test:
   stage: test
   script:
