@@ -1,0 +1,4 @@
+build/hk-svcs-bridge usr/bin/
+build/LICENSE usr/var/hk-svcs-bridge/
+build/config.yaml etc/hk-svcs-bridge.yaml
+services/hk-svcs-bridge.service usr/lib/systemd/user/

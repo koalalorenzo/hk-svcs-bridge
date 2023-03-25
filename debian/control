@@ -1,0 +1,16 @@
+Source: hk-svcs-bridge
+Section: misc
+Priority: optional
+Maintainer: Lorenzo Setale <lorenzo@setale.me>
+Build-Depends: debhelper (>= 9)
+Standard-Version: ${APP_VERSION}
+
+Package: hk-systemd-bridge
+Architecture: ${DEB_ARCH}
+Description: hk-svcs-bridge is a system service written in Go that acts 
+  as a HomeKit bridge to connect SystemD services and HomeKit automation.
+  This project is available for macOS and Linux, and it allows users to add
+  new fake switches to their Apple HomeKit home setup. When these switches
+  are turned on, they will start some SystemD services, and when turned off,
+  they will stop them.
+
