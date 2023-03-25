@@ -26,12 +26,12 @@ test: clean
 
 install: clean
 ifeq ($(UNAME_S),Linux)
-	$(MAKE) build -e BUILD_BINARY=/usr/bin/go-hk-systemd-bridge
-	cp systemd.service /etc/systemd/system/go-homekit-systemd-bridge.service
-	cp config.yaml /etc/go-homekit-systed-bridge.yaml
-	mkdir -p /usr/var/go-hk-systemd-bridge/
+	$(MAKE) build -e BUILD_BINARY=/usr/bin/hk-systemd-bridge
+	cp dpkg/services/hk-systemd-bridge.service /etc/systemd/system/hk-systemd-bridge.service
+	cp config.yaml /etc/hk-systemd-bridge.yaml
+	mkdir -p /usr/var/hk-systemd-bridge/
 	systemctl daemon-reload
-	systemctl enable /etc/systemd/system/go-homekit-systemd-bridge.service
+	systemctl enable /etc/systemd/system/hk-systemd-bridge.service
 else
 	@echo "Error: make install cmd supports only GNU/Linux"
 endif
