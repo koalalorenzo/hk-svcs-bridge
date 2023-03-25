@@ -3,6 +3,7 @@ image: golang:latest
 stages:
   - test
   - build
+  - pkg
   - release
   
 .buildbase:
@@ -21,7 +22,7 @@ stages:
 
 .builddpkgs:
   image: ubuntu:latest
-  stage: build
+  stage: pkg
   script:
     - apt update
     - apt-get install --yes make dh-make apt-utils dpkg-dev dpkg-sig ubuntu-dev-tools binutils-arm-linux-gnueabihf
