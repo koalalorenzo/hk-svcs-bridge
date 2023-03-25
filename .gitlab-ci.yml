@@ -24,8 +24,8 @@ stages:
   image: ubuntu:latest
   stage: pkg
   script:
-    - apt update
-    - apt-get install --yes make dh-make apt-utils dpkg-dev dpkg-sig ubuntu-dev-tools binutils-arm-linux-gnueabihf
+    - DEBIAN_FRONTEND=noninteractive apt update
+    - DEBIAN_FRONTEND=noninteractive apt-get install --yes make dh-make apt-utils dpkg-dev dpkg-sig ubuntu-dev-tools binutils-arm-linux-gnueabihf build-essential
     - make dpgk -e GOOS=linux -e GOARCH=amd64 -e BUILD_TARGET=linux-amd64
     - make dpgk -e GOOS=linux -e GOARCH=arm -e BUILD_TARGET=linux-arm
     - make dpgk -e GOOS=linux -e GOARCH=arm -e GOARM=7 -e BUILD_TARGET=rpi3
