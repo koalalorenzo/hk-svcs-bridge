@@ -5,7 +5,7 @@ Maintainer: Lorenzo Setale <lorenzo@setale.me>
 Build-Depends: debhelper (>= 9)
 Standard-Version: ${APP_VERSION}
 
-Package: hk-systemd-bridge
+Package: hk-svcs-bridge
 Architecture: ${DEB_ARCH}
 Description: hk-svcs-bridge is a system service written in Go that acts 
   as a HomeKit bridge to connect SystemD services and HomeKit automation.
