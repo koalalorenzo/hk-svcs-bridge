@@ -7,7 +7,7 @@ import (
 func SetupBridge() *accessory.Bridge {
 	return accessory.NewBridge(accessory.Info{
 		Name:     conf.Name,
-		Model:    "go-hk-systemd",
+		Model:    "hk-svcs-bridge",
 		Firmware: app_version,
 	})
 }
