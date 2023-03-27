@@ -1,9 +1,9 @@
 Source: hk-svcs-bridge
 Section: misc
 Priority: optional
-Maintainer: Lorenzo Setale <lorenzo@setale.me>
+Maintainer: Lorenzo Setale <contact-project+koalalorenzo-hk-svcs-bridge-43209634-issue-@incoming.gitlab.com>
 Build-Depends: debhelper (>= 9)
-Standard-Version: ${APP_VERSION}
+Standard-Version: ${DPKG_APP_VERSION}
 
 Package: hk-svcs-bridge
 Architecture: ${DEB_ARCH}
