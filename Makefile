@@ -1,5 +1,5 @@
 BUILD_TARGET ?=
-APP_VERSION ?= local-dev
+APP_VERSION ?= 0.0.0-dev
 GIT_SHA ?= $(shell git log -1 --pretty=format:"%h")
 APP_BUILD ?= $(shell date -u "+%Y%m%d-%H%M")-${GIT_SHA}
 BUILD_BINARY ?= build/hk-svcs-bridge-${APP_VERSION}-${BUILD_TARGET}
