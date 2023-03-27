@@ -1,0 +1,13 @@
+[Unit]
+Description=HomeKit Services Bridge
+After=network-online.target
+
+[Service]
+Restart=on-failure
+RestartSec=10s
+	Environment="CONFIG=/etc/hk-svcs-bridge.yaml"
+ExecStart=/usr/bin/hk-svcs-bridge
+WorkingDirectory=/usr/var/hk-svcs-bridge/
+
+[Install]
+WantedBy=multi-user.target

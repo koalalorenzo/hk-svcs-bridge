@@ -1,0 +1,3 @@
+build/hk-svcs-bridge usr/bin/
+build/LICENSE usr/var/hk-svcs-bridge/
+build/config.yaml etc/hk-svcs-bridge.yaml

@@ -1,0 +1,8 @@
+hk-svcs-bridge (${DPKG_APP_VERSION}) internal; urgency=low
+
+  Apple HomeKit bridge for SystemD to automate services and tools. It works
+  with SystemD but it is desinged to work with any commands. Read more on:
+  https://gitlab.com/koalalorenzo/hk-svcs-bridge
+  
+ -- Lorenzo Setale <contact-project+koalalorenzo-hk-svcs-bridge-43209634-issue-@incoming.gitlab.com>  ${DATE}
+

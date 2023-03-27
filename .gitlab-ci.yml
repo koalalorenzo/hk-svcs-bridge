@@ -3,6 +3,7 @@ image: golang:latest
 stages:
   - test
   - build
+  - pkg
   - release
   
 .buildbase:
@@ -19,6 +20,16 @@ stages:
     - make build -e GOOS=darwin -e GOARCH=arm64 -e BUILD_TARGET=macOS-applesilicon
     - make build -e GOOS=windows -e GOARCH=amd64 -e BUILD_TARGET=win-amd64
 
+.builddpkgs:
+  image: ubuntu:latest
+  stage: pkg
+  script:
+    - DEBIAN_FRONTEND=noninteractive apt update
+    - DEBIAN_FRONTEND=noninteractive apt-get install --yes make dh-make apt-utils dpkg-dev dpkg-sig ubuntu-dev-tools binutils-arm-linux-gnueabihf gcc-arm-linux-gnueabi build-essential
+    - make dpkg -e GOOS=linux -e GOARCH=amd64 -e BUILD_TARGET=linux-amd64
+    - make dpkg -e GOOS=linux -e GOARCH=arm -e BUILD_TARGET=linux-arm
+    - make dpkg -e GOOS=linux -e GOARCH=arm -e GOARM=7 -e BUILD_TARGET=rpi3
+
 test:
   stage: test
   script:
@@ -26,8 +37,6 @@ test:
 
 build:development:
   extends: .buildbase
-  variables:
-    APP_VERSION: dev
   artifacts:
     paths:
     - build
@@ -36,6 +45,20 @@ build:development:
     - main
     - master
     - tags
+
+build:development:dpkg:
+  extends: .builddpkgs
+  dependencies:
+    - build:development
+  artifacts:
+    paths:
+    - build
+    expire_in: 1 week
+  except:
+    - main
+    - master
+    - tags
+
 
 build:main:
   extends: .buildbase
@@ -55,10 +78,23 @@ build:tags:
   artifacts:
     paths:
     - build
-    expire_in: never
+    expire_in: 5 years
   only:
     - tags
-  
+
+build:dpkg:
+  extends: .builddpkgs
+  variables:
+    APP_VERSION: $CI_COMMIT_TAG
+  dependencies:
+    - build:tags
+  artifacts:
+    paths:
+    - build
+    expire_in: 5 years
+  only:
+    - tags
+
 publish:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
@@ -66,9 +102,11 @@ publish:
     - echo "Running a new release"
   dependencies: 
     - build:tags
+    - build:dpkg
   artifacts:
     paths:
     - build
+    expire_in: never
   release:
     name: 'Release $CI_COMMIT_TAG'
     tag_name: '$CI_COMMIT_TAG'
