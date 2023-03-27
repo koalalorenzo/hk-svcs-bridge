@@ -25,7 +25,7 @@ stages:
   stage: pkg
   script:
     - DEBIAN_FRONTEND=noninteractive apt update
-    - DEBIAN_FRONTEND=noninteractive apt-get install --yes make dh-make apt-utils dpkg-dev dpkg-sig ubuntu-dev-tools binutils-arm-linux-gnueabihf build-essential
+    - DEBIAN_FRONTEND=noninteractive apt-get install --yes make dh-make apt-utils dpkg-dev dpkg-sig ubuntu-dev-tools binutils-arm-linux-gnueabihf gcc-arm-linux-gnueabi build-essential
     - make dpkg -e GOOS=linux -e GOARCH=amd64 -e BUILD_TARGET=linux-amd64
     - make dpkg -e GOOS=linux -e GOARCH=arm -e BUILD_TARGET=linux-arm
     - make dpkg -e GOOS=linux -e GOARCH=arm -e GOARM=7 -e BUILD_TARGET=rpi3
