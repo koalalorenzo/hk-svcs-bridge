@@ -31,7 +31,7 @@ test: clean
 install: clean
 ifeq ($(UNAME_S),Linux)
 	$(MAKE) build -e BUILD_BINARY=/usr/bin/hk-svcs-bridge
-	cp dpkg/services/hk-svcs-bridge.service /etc/systemd/system/hk-svcs-bridge.service
+	cp debian/hk-svcs-bridge.service /etc/systemd/system/hk-svcs-bridge.service
 	cp config.yaml /etc/hk-svcs-bridge.yaml
 	mkdir -p /usr/var/hk-svcs-bridge/
 	systemctl daemon-reload

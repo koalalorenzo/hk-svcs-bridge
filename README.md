@@ -35,7 +35,8 @@ After that, you **must change the configuration** in
 running:
 
 ```bash
-sudo systemd restart hk-svcs-bridge
+sudo systemctl daemon-reload
+sudo systemctl restart hk-svcs-bridge
 ```
 
 ## Configuration
