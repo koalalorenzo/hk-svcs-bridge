@@ -52,7 +52,7 @@ build:
 
 dpkg:
 	mkdir -p ${_DEB_BUILD_PATH}/build
-	cp -aR debian services ${_DEB_BUILD_PATH}/
+	cp -aR debian ${_DEB_BUILD_PATH}/
 	cp LICENSE config.yaml ${_DEB_BUILD_PATH}/build
 	cp ${BUILD_BINARY} ${_DEB_BUILD_PATH}/build/hk-svcs-bridge
 	chmod +x ${_DEB_BUILD_PATH}/debian/rules
