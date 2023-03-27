@@ -37,8 +37,6 @@ test:
 
 build:development:
   extends: .buildbase
-  variables:
-    APP_VERSION: dev
   artifacts:
     paths:
     - build
@@ -50,8 +48,6 @@ build:development:
 
 build:development:dpkg:
   extends: .builddpkgs
-  variables:
-    APP_VERSION: dev
   dependencies:
     - build:development
   artifacts:
@@ -88,6 +84,8 @@ build:tags:
 
 build:dpkg:
   extends: .builddpkgs
+  variables:
+    APP_VERSION: $CI_COMMIT_TAG
   dependencies:
     - build:tags
   artifacts:
