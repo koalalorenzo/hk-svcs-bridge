@@ -22,11 +22,6 @@ func init() {
 }
 
 func main() {
-	if len(os.Args) == 1 {
-		log.Warn("Use hk-svcs-bridge serve to start the server", "version", app_version, "build", app_build)
-		os.Exit(0)
-	}
-
 	log.Info("Starting Go HomeKit Services Bridge", "version", app_version, "build", app_build)
 	bridge := SetupBridge()
 
