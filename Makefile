@@ -11,10 +11,11 @@ CGO_ENABLED=0
 
 .EXPORT_ALL_VARIABLES:
 
-ifeq ($(GOARCH),arm)
-	DEB_ARCH := armhf
-endif
 DEB_ARCH ?= $(GOARCH)
+ifeq ($(GOARCH),arm)
+DEB_ARCH := armhf
+endif
+
 _DEB_BUILD_PATH := $(shell mktemp -d)/build/deb/${DEB_ARCH}/hk-svcs-bridge-${APP_VERSION}
 DATE ?= $(shell date -R)
 
