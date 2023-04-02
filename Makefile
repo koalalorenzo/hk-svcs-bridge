@@ -6,8 +6,16 @@ APP_BUILD ?= $(shell date -u "+%Y%m%d-%H%M")-${GIT_SHA}
 BUILD_BINARY ?= build/hk-svcs-bridge-${APP_VERSION}-${BUILD_TARGET}
 UNAME_S ?= $(shell uname -s)
 
-CGO_ENABLED=0
+CI_API_V4_URL ?= https://gitlab.com/api/v4
+CI_PROJECT_ID ?= 43209634
+PKGS_REGISTRY ?= ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${APP_VERSION}
 
+CGO_ENABLED=0
+GITLAB_AUTH_HEADER ?= "JOB-TOKEN: ${CI_JOB_TOKEN}"
+
+ifeq($(CI_JOB_TOKEN),)
+GITLAB_AUTH_HEADER ?= "PRIVATE-TOKEN: ${GITLAB_TOKEN}" 
+endif
 
 .EXPORT_ALL_VARIABLES:
 
@@ -67,3 +75,10 @@ dpkg:
 run: clean
 	LOG_LEVEL=debug go run ./*.go
 .PHONY: run
+
+# Upload to GitLab Package Registry
+upload_pkgs:
+	for i in build/*; do \
+		curl --header "${GITLAB_AUTH_HEADER}" --upload-file $$i "${PKGS_REGISTRY}/$$i"; \
+	done
+.PHONY: upload_pkgs
