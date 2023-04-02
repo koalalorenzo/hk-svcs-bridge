@@ -99,7 +99,7 @@ publish:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   script: 
-    - echo "Running a new release"
+    - echo "Making a release"
   dependencies: 
     - build:tags
     - build:dpkg
@@ -112,5 +112,20 @@ publish:
     tag_name: '$CI_COMMIT_TAG'
     ref: '$CI_COMMIT_TAG'
     description: See CHANGELOG.md
+    assets:
+      links:
+        - name: 'hk-svcs-bridge-linux-amd64'
+          url: 'https://gitlab.com/koalalorenzo/hk-svcs-bridge/-/jobs/${CI_JOB_ID}/artifacts/raw/build/hk-svcs-bridge-${CI_COMMIT_TAG}-linux-amd64'
+        - name: 'hk-svcs-bridge-linux-arm'
+          url: 'https://gitlab.com/koalalorenzo/hk-svcs-bridge/-/jobs/${CI_JOB_ID}/artifacts/raw/build/hk-svcs-bridge-${CI_COMMIT_TAG}-linux-arm'
+        - name: 'hk-svcs-bridge-linux-arm64'
+          url: 'https://gitlab.com/koalalorenzo/hk-svcs-bridge/-/jobs/${CI_JOB_ID}/artifacts/raw/build/hk-svcs-bridge-${CI_COMMIT_TAG}-linux-arm64'
+        - name: 'hk-svcs-bridge-rpi3'
+          url: 'https://gitlab.com/koalalorenzo/hk-svcs-bridge/-/jobs/${CI_JOB_ID}/artifacts/raw/build/hk-svcs-bridge-${CI_COMMIT_TAG}-rpi3'
+        - name: 'hk-svcs-bridge-macOS-amd64'
+          url: 'https://gitlab.com/koalalorenzo/hk-svcs-bridge/-/jobs/${CI_JOB_ID}/artifacts/raw/build/hk-svcs-bridge-${CI_COMMIT_TAG}-macOS-amd64'
+        - name: 'hk-svcs-bridge-macOS-arm64'
+          url: 'https://gitlab.com/koalalorenzo/hk-svcs-bridge/-/jobs/${CI_JOB_ID}/artifacts/raw/build/hk-svcs-bridge-${CI_COMMIT_TAG}-macOS-arm64'
+
   only:
     - tags
