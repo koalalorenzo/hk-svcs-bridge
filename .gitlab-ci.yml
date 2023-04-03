@@ -98,7 +98,7 @@ publish:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   script: 
-    - echo "Making a release"
+    - make upload_pkgs
   dependencies: 
     - build:tags
     - build:dpkg
