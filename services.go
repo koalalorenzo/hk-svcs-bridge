@@ -120,16 +120,14 @@ func (s *SystemDService) Init() SystemDService {
 	})
 
 	// We assume that the service is already running
-	sw.Switch.On.SetValue(true)
+	// sw.Switch.On.SetValue(true)
 
 	// Adds event for on-off switching
-	sw.Switch.On.OnValueRemoteUpdate(func(on bool) {
-		// If it fails running any cmd, don't change the value of the switch
-		oldValue := s.Accessory.Switch.On.Value()
-		if on == true {
-			s.runCmd(s.OffCommand, false, oldValue)
+	sw.Switch.On.OnValueRemoteUpdate(func(newState bool) {
+		if newState == false {
+			s.runCmd(s.OffCommand, false, true)
 		} else {
-			s.runCmd(s.OnCommand, true, oldValue)
+			s.runCmd(s.OnCommand, true, false)
 		}
 	})
 
