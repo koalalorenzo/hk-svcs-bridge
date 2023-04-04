@@ -33,13 +33,24 @@ type SystemDService struct {
 	IsUpdating bool `yaml:"-" default:"-"`
 }
 
+// SetState will change the state only if needed.
+func (s *SystemDService) SetState(newState bool) {
+	oldState := s.Accessory.Switch.On.Value()
+	log := log.With("oldState", oldState, "svcName", s.Name)
+
+	if oldState != newState {
+		log.Debug("Changing state", "newState", newState, "oldState", oldState)
+		s.Accessory.Switch.On.SetValue(newState)
+	}
+}
+
 func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
 	if s.IsUpdating {
 		return
 	}
 	s.IsUpdating = true
 	defer func() { s.IsUpdating = false }()
-	log := log.With("cmd", cmd)
+	log := log.With("cmd", cmd, "svcName", s.Name)
 
 	log.Debug("Running...")
 	args := strings.Split(cmd, " ")
@@ -48,7 +59,8 @@ func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
 	out, err := run.CombinedOutput()
 	log = log.With("output", out)
 	if err != nil {
-		s.Accessory.Switch.On.SetValue(failSetVal)
+		// There was an error, let's change to failure
+		s.SetState(failSetVal)
 		if exitError, ok := err.(*exec.ExitError); ok {
 			exitCode := exitError.ExitCode()
 			log.Warn("Error running output", "exitCode", exitCode)
@@ -59,14 +71,15 @@ func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
 		return
 	}
 
-	s.Accessory.Switch.On.SetValue(succSetVal)
+	// Success! Let's change the state
+	s.SetState(succSetVal)
 
 	// Prevent Updating during the to avoid overlapping
-	time.Sleep(time.Duration(250) * time.Millisecond)
+	time.Sleep(time.Duration(500) * time.Millisecond)
 }
 
 func (s *SystemDService) CheckStatus() {
-	log := log.With("svc_name", s.Name)
+	log := log.With("svcName", s.Name)
 	if !s.PeriodicCheck {
 		log.Debug("Skipping periodic check")
 		return
@@ -107,16 +120,14 @@ func (s *SystemDService) Init() SystemDService {
 	})
 
 	// We assume that the service is already running
-	sw.Switch.On.SetValue(true)
+	// sw.Switch.On.SetValue(true)
 
 	// Adds event for on-off switching
-	sw.Switch.On.OnValueRemoteUpdate(func(on bool) {
-		// If it fails running any cmd, don't change the value of the switch
-		oldValue := s.Accessory.Switch.On.Value()
-		if on == true {
-			s.runCmd(s.OffCommand, false, oldValue)
+	sw.Switch.On.OnValueRemoteUpdate(func(newState bool) {
+		if newState == false {
+			s.runCmd(s.OffCommand, false, true)
 		} else {
-			s.runCmd(s.OnCommand, true, oldValue)
+			s.runCmd(s.OnCommand, true, false)
 		}
 	})
 

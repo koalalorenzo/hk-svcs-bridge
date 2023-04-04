@@ -97,7 +97,8 @@ build:dpkg:
 publish:
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
-  script: 
+  script:
+    - apk -U add curl make git
     - make upload_pkgs
   dependencies: 
     - build:tags
