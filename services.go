@@ -33,13 +33,24 @@ type SystemDService struct {
 	IsUpdating bool `yaml:"-" default:"-"`
 }
 
+// SetState will change the state only if needed.
+func (s *SystemDService) SetState(newState bool) {
+	oldState := s.Accessory.Switch.On.Value()
+	log := log.With("oldState", oldState, "svcName", s.Name)
+
+	if oldState != newState {
+		log.Debug("Changing state", "newState", newState, "oldState", oldState)
+		s.Accessory.Switch.On.SetValue(newState)
+	}
+}
+
 func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
 	if s.IsUpdating {
 		return
 	}
 	s.IsUpdating = true
 	defer func() { s.IsUpdating = false }()
-	log := log.With("cmd", cmd)
+	log := log.With("cmd", cmd, "svcName", s.Name)
 
 	log.Debug("Running...")
 	args := strings.Split(cmd, " ")
