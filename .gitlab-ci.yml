@@ -130,7 +130,7 @@ publish:
           url: 'https://gitlab.com/koalalorenzo/hk-svcs-bridge/-/jobs/${CI_JOB_ID}/artifacts/browse/build/'
           link_type: 'package'
         - name: 'Other binaries and files...'
-          url: 'https://gitlab.com/koalalorenzo/hk-svcs-bridge/-/jobs/${CI_JOB_ID}/artifacts/browse/build/'
+          url: 'https://gitlab.com/koalalorenzo/hk-svcs-bridge/-/jobs/${CI_JOB_ID}/artifacts/browse/'
           link_type: 'other'
   only:
     - tags
