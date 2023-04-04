@@ -59,7 +59,8 @@ func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
 	out, err := run.CombinedOutput()
 	log = log.With("output", out)
 	if err != nil {
-		s.Accessory.Switch.On.SetValue(failSetVal)
+		// There was an error, let's change to failure
+		s.SetState(failSetVal)
 		if exitError, ok := err.(*exec.ExitError); ok {
 			exitCode := exitError.ExitCode()
 			log.Warn("Error running output", "exitCode", exitCode)
@@ -70,14 +71,15 @@ func (s *SystemDService) runCmd(cmd string, succSetVal, failSetVal bool) {
 		return
 	}
 
-	s.Accessory.Switch.On.SetValue(succSetVal)
+	// Success! Let's change the state
+	s.SetState(succSetVal)
 
 	// Prevent Updating during the to avoid overlapping
-	time.Sleep(time.Duration(250) * time.Millisecond)
+	time.Sleep(time.Duration(500) * time.Millisecond)
 }
 
 func (s *SystemDService) CheckStatus() {
-	log := log.With("svc_name", s.Name)
+	log := log.With("svcName", s.Name)
 	if !s.PeriodicCheck {
 		log.Debug("Skipping periodic check")
 		return
